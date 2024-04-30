@@ -20,8 +20,8 @@
   <script src="Edge.js"></script>
   <script src="Triangle.js"></script>
 
-  <script src="cube.js"></script>
-  <!-- <script src="sphere.js"></script> -->
+  <!-- <script src="cube.js"></script> -->
+  <script src="sphere.js"></script>
 
   <script>
     //Options
@@ -47,6 +47,9 @@
     let norms = [];
     let uvs = [];
     let triangles = [];
+
+    //Animation timer.
+    let timer = 0;
 
     for (let i = 0; i < lines.length; i++)
     {
@@ -118,14 +121,14 @@
     
     function rotate(x, y, angle)
     {
-      let _x = x = buffer/2;
+      let _x = x - buffer/2;
       let _y = y;
       let _r = Math.sqrt((_x * _x) + (_y * y))
       let _tan = Math.atan2(_y, _x);
       let _angle = _tan + angle;
       let _x2 = Math.cos(_angle) * _r;
-      let _y2 = Math.sin(_angle) * r;
-      return {x: _x2 + bufferSize/2, y: _y2};
+      let _y2 = Math.sin(_angle) * _r;
+      return {x: _x2 + buffer/2, y: _y2};
     }
 
     function mouseClick(event) 
@@ -164,13 +167,37 @@
 
         if (animate)
         {
+          angle = timer / 10;
 
+          //Ricks had this as one variable but I'm doing three cause I think it'll be easier to manipulate later
+          let rotation1 = rotate(one.x, one.z, angle);
+          one.x = rotation1.x;
+          one.z = rotation1.y;
+
+          let rotation2 = rotate(two.x, two.z, angle);
+          two.x = rotation2.x;
+          two.z = rotation2.y;
+
+          let rotation3 = rotate(three.x, three.z, angle);
+          three.x = rotation3.x;
+          three.z = rotation3.y;
         }
 
         //Camera stuff.
         let cameraFromZ = buffer / 2 + buffer / 8 + 5;
         let cameraToZ = buffer/8 + 5;
         let cameraLengthZ = cameraFromZ - cameraToZ;
+
+        let points = [one, two, three];
+
+        if (perspective)
+        {
+          for (const point of points)
+          {
+            let distanceZ = cameraFromZ - point.z;
+          }
+        }
+
 
         let twoToOne = two.subtract(one);
         let threeToOne = three.subtract(one);
@@ -255,12 +282,14 @@
           } 
         }
 
+        //Increment timer.
+        timer++;
       }
     }
 
     if (animate)
     {
-      setInterval(render, 100);
+      setInterval(render, 13);
     }
     else
     {
