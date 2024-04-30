@@ -24,6 +24,10 @@
   <!-- <script src="sphere.js"></script> -->
 
   <script>
+    //Options
+    let animate = false;
+    let perspective = false;
+    let backFaceCulling = true;
 
     //Setting up the canvas
     let canvas = document.querySelector("#canv");
@@ -112,6 +116,18 @@
 
     //Functions
     
+    function rotate(x, y, angle)
+    {
+      let _x = x = buffer/2;
+      let _y = y;
+      let _r = Math.sqrt((_x * _x) + (_y * y))
+      let _tan = Math.atan2(_y, _x);
+      let _angle = _tan + angle;
+      let _x2 = Math.cos(_angle) * _r;
+      let _y2 = Math.sin(_angle) * r;
+      return {x: _x2 + bufferSize/2, y: _y2};
+    }
+
     function mouseClick(event) 
     {
       let x = event.clientX;
@@ -122,9 +138,6 @@
 
     function render()
     {
-      let perspective = true;
-      let backFaceCulling = true;
-      let oneTriangle = true;
 
       //Clear Z buffer
       zBuffer = [];
@@ -148,6 +161,11 @@
         let one = triangles[i].vOne.clone();
         let two = triangles[i].vTwo.clone();
         let three = triangles[i].vThree.clone();
+
+        if (animate)
+        {
+
+        }
 
         //Camera stuff.
         let cameraFromZ = buffer / 2 + buffer / 8 + 5;
@@ -240,7 +258,14 @@
       }
     }
 
-    render();
+    if (animate)
+    {
+      setInterval(render, 100);
+    }
+    else
+    {
+      render();
+    }
 
   </script>
 </body>
