@@ -20,8 +20,8 @@
   <script src="Edge.js"></script>
   <script src="Triangle.js"></script>
 
-  <script src="cube.js"></script>
-  <!-- <script src="sphere.js"></script> -->
+  <!-- <script src="cube.js"></script> -->
+  <script src="sphere.js"></script>
 
   <script>
     //Options
@@ -269,6 +269,7 @@
             zBuffer[x][y] = new Pixel(x, y, undefined, r, g, b);
           }
         }
+      }
 
         //Draw the buffer
         for (let x = 0; x < bufferWidth; x++)
@@ -282,9 +283,8 @@
           } 
         }
 
-        //Increment timer.
-        timer++;
-      }
+    //Increment timer.
+    timer++;
     }
 
     if (animate)
