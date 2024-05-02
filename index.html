@@ -10,7 +10,7 @@
   </style>
 </head>
 
-<body onclick="mouseClick(event)" style="background-color: blue;">
+<body onmousemove="mouseMove(event)" style="background-color: blue;">
   <canvas id="canv">
   </canvas>
 
@@ -20,8 +20,8 @@
   <script src="Edge.js"></script>
   <script src="Triangle.js"></script>
 
-  <!-- <script src="cube.js"></script> -->
-  <script src="sphere.js"></script>
+  <script src="cube.js"></script>
+  <!-- <script src="sphere.js"></script> -->
 
   <script>
     //Options
@@ -36,9 +36,9 @@
     canvas.width = buffer;
     canvas.height = buffer
     let context = canvas.getContext("2d")
-    context.fillStyle = "red"
-    context.fillRect(0, 0, 100, 100)
+
     
+    let mouseX = 0;
 
 
     //Object parsing.
@@ -47,9 +47,6 @@
     let norms = [];
     let uvs = [];
     let triangles = [];
-
-    //Animation timer.
-    let timer = 0;
 
     for (let i = 0; i < lines.length; i++)
     {
@@ -131,12 +128,13 @@
       return {x: _x2 + buffer/2, y: _y2};
     }
 
-    function mouseClick(event) 
+    function mouseMove(event) 
     {
       let x = event.clientX;
-      let y = event.clientY;
-      let text = "X coords: " + x + ", Y coords: " + y;
+      let text = "mouseX : " + mouseX;
       console.log(text);
+
+      mouseX = x;
     }
 
     function render()
@@ -167,7 +165,8 @@
 
         if (animate)
         {
-          angle = timer / 10;
+          angle = mouseX / 300;
+          console.log(angle);
 
           //Ricks had this as one variable but I'm doing three cause I think it'll be easier to manipulate later
           let rotation1 = rotate(one.x, one.z, angle);
@@ -185,7 +184,7 @@
 
         //Camera stuff.
         let cameraFromZ = buffer / 2 + buffer / 8 + 5;
-        let cameraToZ = buffer/8 + 5;
+        let cameraToZ = buffer / 8 + 5;
         let cameraLengthZ = cameraFromZ - cameraToZ;
 
         let points = [one, two, three];
@@ -282,14 +281,11 @@
             context.fillRect(pixel.x, pixel.y, 1, 1);
           } 
         }
-
-    //Increment timer.
-    timer++;
     }
 
     if (animate)
     {
-      setInterval(render, 13);
+      setInterval(render, 10);
     }
     else
     {
